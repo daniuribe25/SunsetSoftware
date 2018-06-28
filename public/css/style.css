@@ -61,7 +61,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-    font-size: 54px;
+    font-size: 60px;
 }
 
 h2 {
@@ -205,7 +205,7 @@ input[type="text"], input[type="email"], input[type="password"], input[type="num
     border: none;
 	  background: #F4F4F4;
     border-bottom: 2px solid #EEE;
-    color: #354052;
+    color: rgb(37, 34, 34);
     padding: 0px 10px;
     opacity: 0.5;
     -webkit-transition: 0.2s border-color, 0.2s opacity;

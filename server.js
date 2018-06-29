@@ -68,6 +68,15 @@
           });
     });
 
+
+    router.route('/getVisits').get((req, res) => {
+        fs.readFile('./visits.txt', (err, data) => {
+            if (err) console.log(err);
+            var visits = +data;
+                res.sendfile(__dirname + '/visits.txt');
+          });
+    });
+
     app.use("/api", router);
 
 

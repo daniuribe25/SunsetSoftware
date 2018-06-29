@@ -128,5 +128,29 @@
 		return false;
 	});
 
+	function setCounter(){
+		var diaUsuario = "";
+
+
+		$.ajax({
+			type: "GET",
+			url: "https://sunsetsoftware.herokuapp.com/api/setUserCounter",
+			//data: str,
+			success: function (msg) {
+				// alert(msg);
+				if (msg == 'OK') {
+					$("#sendmessage").addClass("show");
+					$("#errormessage").removeClass("show");
+					$('.contactForm').find("input, textarea").val("");
+				} else {
+					$("#sendmessage").removeClass("show");
+					$("#errormessage").addClass("show");
+					$('#errormessage').html(msg);
+				}
+
+			}
+		});
+
+	}
 
 })(jQuery);

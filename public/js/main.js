@@ -134,7 +134,8 @@
 
 		$.ajax({
 			type: "GET",
-			url: "https://sunsetsoftware.herokuapp.com/api/setUserCounter",
+			url: "http://localhost:5000/api/setVisit",
+			//url: "https://sunsetsoftware.herokuapp.com/api/setVisit",
 			//data: str,
 			success: function (msg) {
 				// alert(msg);
@@ -152,5 +153,7 @@
 		});
 
 	}
+
+	setCounter();
 
 })(jQuery);

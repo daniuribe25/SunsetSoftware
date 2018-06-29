@@ -1,4 +1,4 @@
-((express, http, bodyParser, methodOverride, nodemailer) => {
+((express, http, bodyParser, methodOverride, nodemailer, fs) => {
     var app = express(),
         server = http.createServer(app),
         router = express.Router();
@@ -44,6 +44,28 @@
         res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
 
         res.json("OK");
+    });
+
+    router.route('/setVisit').get((req, res) => {
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.setHeader("Access-Control-Allow-Credentials", "true");
+        res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+        res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+
+        fs.readFile('./visits.txt', (err, data) => {
+            if (err) console.log(err);
+            var numVisits = 0;
+            if(data){
+                numVisits = +data;
+                numVisits++;
+            }
+
+            fs.writeFile('./visits.txt', numVisits, (err)=>{
+                if(err) console.log(err);
+
+                res.json("OK");
+            });
+          });
     });
 
     app.use("/api", router);
@@ -102,5 +124,6 @@
     require("http"),
     require("body-parser"),
     require("method-override"),
-    require('nodemailer')
+    require('nodemailer'),
+    require('fs')
 )

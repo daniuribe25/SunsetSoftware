@@ -265,12 +265,18 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 }
 
 .navbar-brand .logo, .navbar-brand .logo-alt {
-    max-height: 50px;
+    max-height: 150px;
     display: block;
 }
 
 #nav:not(.nav-transparent):not(.fixed-nav) .navbar-brand .logo-alt {
 	display: none;
+}
+
+.logo-alt{
+    margin-top: 50px;
+    position: relative;
+    left: -120px;
 }
 
 #nav.nav-transparent:not(.fixed-nav) .navbar-brand .logo {
@@ -279,6 +285,30 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 
 #nav.fixed-nav .navbar-brand .logo-alt {
     display: none;
+}
+
+@media only screen and (max-width: 1340px) {
+    .logo-alt{
+        margin-top: 50px;
+        position: relative;
+        left: -50px;
+    }
+}
+
+@media (max-width: 1310px) {
+    .logo-alt{
+        margin-top: 50px;
+        position: relative;
+        left: 100px;
+    }
+}
+
+@media (max-width: 990px) {
+    .logo-alt{
+        margin-top: 50px;
+        position: relative;
+        left: 0px;
+    }
 }
 
 @media only screen and (max-width: 767px) {
@@ -320,6 +350,11 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 
 #nav.nav-transparent {
     background: transparent;
+}
+
+.navbar{
+    padding-top: 10px !important;
+    min-height:70px !important;
 }
 
 
@@ -1029,6 +1064,7 @@ header {
 
 .team-img>img {
   width: 100%;
+  height: 300px;
 }
 
 .team .overlay {

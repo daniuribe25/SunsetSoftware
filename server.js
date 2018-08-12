@@ -1,4 +1,4 @@
-((express, http, bodyParser, methodOverride, nodemailer, fs) => {
+((express, http, bodyParser, methodOverride, nodemailer, fs, PDFDocument) => {
     var app = express(),
         server = http.createServer(app),
         router = express.Router();
@@ -35,7 +35,6 @@
             subject: req.body.subject,
             message: req.body.message,
             email: req.body.email,
-            pais: req.body.pais
         };
         sendUserEmail(body)
         res.setHeader("Access-Control-Allow-Origin", "*");
@@ -55,17 +54,17 @@
         fs.readFile('./visits.txt', (err, data) => {
             if (err) console.log(err);
             var numVisits = 0;
-            if(data){
+            if (data) {
                 numVisits = +data;
                 numVisits++;
             }
 
-            fs.writeFile('./visits.txt', numVisits, (err)=>{
-                if(err) console.log(err);
+            fs.writeFile('./visits.txt', numVisits, (err) => {
+                if (err) console.log(err);
 
                 res.json("OK");
             });
-          });
+        });
     });
 
 
@@ -73,12 +72,28 @@
         fs.readFile('./visits.txt', (err, data) => {
             if (err) console.log(err);
             var visits = +data;
-                res.sendfile(__dirname + '/visits.txt');
-          });
+            res.sendfile(__dirname + '/visits.txt');
+        });
+    });
+
+
+    router.route('/pdf').get((req, res) => {
+        const doc = new PDFDocument();
+        let filename = 'prueba';
+        // Stripping special characters
+        filename = encodeURIComponent(filename) + '.pdf'
+        // Setting response to 'attachment' (download).
+        // If you use 'inline' here it will automatically open the PDF
+        res.setHeader('Content-disposition', 'attachment; filename="' + filename + '"')
+        res.setHeader('Content-type', 'application/pdf')
+        const content = '<b>Este es un pdf de prueba</b> <br /> daniel'
+        doc.y = 300
+        doc.text(content, 50, 50)
+        doc.pipe(res)
+        doc.end()
     });
 
     app.use("/api", router);
-
 
     function sendUserEmail(form) {
         var transporter = nodemailer.createTransport({
@@ -92,11 +107,10 @@
             }
         });
         var htmlContent = "<div>" +
-            "<h2>Nuevo Mensaje</h2>" +
+            "<h2>Contacto de página WestDreamSolutions</h2>" +
             "<span style='font-weight: 600'>  Nombre:</span>  " + form.name + " <br /><br />" +
             "<span style='font-weight: 600'>   Celular:</span> " + form.cel + "<br /><br />" +
             "<span style='font-weight: 600'>   Correo:</span> " + form.email + "<br /><br />" +
-            "<span style='font-weight: 600'>   Pais:</span> " + form.pais + "<br /><br />" +
             "<span style='font-weight: 600'>   Tema:</span> " + form.subject + "<br /><br />" +
             "<span style='font-weight: 600'>   Mensaje:</span>  " + form.message + "<br /><br />" +
             "</div>";
@@ -104,7 +118,7 @@
             from: 'dani.uribe25@gmail.com', // sender address
             to: 'dani.uribe25@gmail.com', // list of receivers
             // to: 'dani.uribe25@gmail.com',
-            subject: 'Nuevo contacto de ' + form.name, // Subject line
+            subject: 'Nuevo contacto de ' + form.name + ' sobre WestDreamSolutions', // Subject line
             text: '', //, // plaintext body
             html: htmlContent
         };
@@ -129,10 +143,11 @@
     });
 
 })
-(require("express"),
+    (require("express"),
     require("http"),
     require("body-parser"),
     require("method-override"),
     require('nodemailer'),
-    require('fs')
-)
+    require('fs'),
+    require('pdfkit')
+    )

@@ -99,28 +99,37 @@
 			subject: $('#subject').val(),
 			message: $('#message').val(),
 			email: $('#email').val(),
-			pais: $('#pais').val(),
+		}
+		if (!str.name || !str.cel || !str.subject || !str.message || !str.email) {
+			alert("complete todos los campos para envíar la información");
+			return;
 		}
 
-		alert(JSON.stringify(str))
+		if (!validateEmail(str.email)) {
+			alert("Debe ingresar un email válido");
+			return;
+		}
+
 		$.ajax({
 			type: "POST",
 			// headers: {  
 			//         'Access-Control-Allow-Origin': '*' 
 			// },
-			//url: "http://localhost:5000/api/sendMail",
-			url: "https://sunsetsoftware.herokuapp.com/api/sendMail",
+			url: "http://localhost:5000/api/sendMail",
+			//url: "https://sunsetsoftware.herokuapp.com/api/sendMail",
 			data: str,
 			success: function (msg) {
 				// alert(msg);
 				if (msg == 'OK') {
-					$("#sendmessage").addClass("show");
-					$("#errormessage").removeClass("show");
-					$('.contactForm').find("input, textarea").val("");
+					alert('Se ha realizado el contacto exitosamente, pronto nos comunicaremos contigo.');
+					$('#name').val("");
+					$('#cel').val("");
+					$('#subject').val("");
+					$('#message').val("");
+					$('#email').val("");
+					$('#pais').val("");
 				} else {
-					$("#sendmessage").removeClass("show");
-					$("#errormessage").addClass("show");
-					$('#errormessage').html(msg);
+					alert('Ha ocurrido un inconveniente al enviar la información, vuelva a intentarlo y si el problema continua por favor envianos un email a support@westdreamsolutions.com.');
 				}
 
 			}
@@ -128,7 +137,7 @@
 		return false;
 	});
 
-	function setCounter(){
+	function setCounter() {
 		var diaUsuario = "";
 
 
@@ -152,6 +161,11 @@
 			}
 		});
 
+	}
+
+	function validateEmail(email) {
+		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return re.test(String(email).toLowerCase());
 	}
 
 	setCounter();
